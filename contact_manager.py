@@ -39,20 +39,41 @@ def view_contacts(contacts):
         print(f"{i+1}. Name: {contact['name']}, Phone: {contact['phone']}")
     print("---------------------\n")
 
+
+def delete_contact(contacts):
+    """Deletes an existing contact."""
+    view_contacts(contacts) # Show current contacts to help user choose
+    if not contacts:
+        return
+
+    try:
+        choice = int(input("Enter the number of the contact to delete: "))
+        if 1 <= choice <= len(contacts):
+            deleted_contact = contacts.pop(choice - 1)
+            save_contacts(contacts)
+    print(f"Contact '{deleted_contact['name']}' deleted.")
+    else:
+    print("Invalid contact number.")
+    except ValueError:
+    print("Invalid input. Please enter a number.")
+
 def main():
     contacts = load_contacts()
     while True:
         print("\nContact Manager Menu:")
         print("1. Add Contact")
         print("2. View Contacts")
-        print("3. Exit")
+        print("3. Delete Contact") # New option
+        print("4. Exit")         # Changed from 3 to 4
         choice = input("Enter your choice: ")
 
         if choice == '1':
             add_contact(contacts)
         elif choice == '2':
             view_contacts(contacts)
-        elif choice == '3':
+        elif choice == '3': # New handling
+            delete_contact(contacts)
+        elif choice == '4': # Changed from 3 to 4
             print("Exiting Contact Manager. Goodbye!")
             break
         else:
