@@ -31,7 +31,7 @@ def add_contact(contacts):
 def view_contacts(contacts):
     """Displays all contacts."""
     if not contacts:
-        print("No contacts found.")
+        print("Your contact list is empty.") # Changed message for bug fix
         return
 
     print("\n--- Your Contacts ---")
