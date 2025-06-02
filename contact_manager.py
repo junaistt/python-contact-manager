@@ -39,7 +39,6 @@ def view_contacts(contacts):
         print(f"{i+1}. Name: {contact['name']}, Phone: {contact['phone']}")
     print("---------------------\n")
 
-
 def delete_contact(contacts):
     """Deletes an existing contact."""
     view_contacts(contacts) # Show current contacts to help user choose
@@ -51,11 +50,37 @@ def delete_contact(contacts):
         if 1 <= choice <= len(contacts):
             deleted_contact = contacts.pop(choice - 1)
             save_contacts(contacts)
-    print(f"Contact '{deleted_contact['name']}' deleted.")
-    else:
-    print("Invalid contact number.")
+            print(f"Contact '{deleted_contact['name']}' deleted.")
+        else:
+            print("Invalid contact number.")
     except ValueError:
-    print("Invalid input. Please enter a number.")
+        print("Invalid input. Please enter a number.")
+
+def edit_contact(contacts): # <-- NEWLY COMPLETED FUNCTION
+    """Edits an existing contact."""
+    view_contacts(contacts) # Show current contacts to help user choose
+    if not contacts:
+        return
+
+    try:
+        choice = int(input("Enter the number of the contact to edit: "))
+        if 1 <= choice <= len(contacts):
+            contact_to_edit = contacts[choice - 1]
+            print(f"Editing contact: {contact_to_edit['name']}, {contact_to_edit['phone']}")
+            new_name = input(f"Enter new name (current: {contact_to_edit['name']}): ")
+            new_phone = input(f"Enter new phone (current: {contact_to_edit['phone']}): ")
+
+            if new_name: # Update only if user provides a new name
+                contact_to_edit['name'] = new_name
+            if new_phone: # Update only if user provides a new phone
+                contact_to_edit['phone'] = new_phone
+
+            save_contacts(contacts)
+            print(f"Contact '{contact_to_edit['name']}' updated.")
+        else:
+            print("Invalid contact number.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
 
 def main():
     contacts = load_contacts()
@@ -63,17 +88,20 @@ def main():
         print("\nContact Manager Menu:")
         print("1. Add Contact")
         print("2. View Contacts")
-        print("3. Delete Contact") # New option
-        print("4. Exit")         # Changed from 3 to 4
+        print("3. Delete Contact")
+        print("4. Edit Contact") # <-- NEW OPTION
+        print("5. Exit")         # <-- CHANGED FROM 4 TO 5
         choice = input("Enter your choice: ")
 
         if choice == '1':
             add_contact(contacts)
         elif choice == '2':
             view_contacts(contacts)
-        elif choice == '3': # New handling
+        elif choice == '3':
             delete_contact(contacts)
-        elif choice == '4': # Changed from 3 to 4
+        elif choice == '4': # <-- NEW HANDLING
+            edit_contact(contacts)
+        elif choice == '5': # <-- CHANGED FROM 4 TO 5
             print("Exiting Contact Manager. Goodbye!")
             break
         else:
@@ -81,3 +109,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
